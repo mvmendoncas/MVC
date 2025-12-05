@@ -27,7 +27,7 @@ public class ViewClienteBoasVinda extends javax.swing.JFrame {
         this.cpfCliente = cpf;
         initComponents();
         carregarInformacoesCliente();
-        // Opcional: Mostrar o CPF no console para debug
+        // para debug
         System.out.println("Boas-Vindas para CPF: " + this.cpfCliente); 
     }
     

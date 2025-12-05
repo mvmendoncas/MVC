@@ -78,48 +78,46 @@ public class ClienteDAO {
         List<ModelCliente> clientes = listarTodos();
         boolean encontrado = false;
         
-        // rocura e atualiza na lista da memória
+        // procura e atualiza na linha da memoria
         for (int i = 0; i < clientes.size(); i++) {
             if (clientes.get(i).getCpf().equals(clienteAtualizado.getCpf())) {
-                clientes.set(i, clienteAtualizado); // Substitui o cliente na lista
+                clientes.set(i, clienteAtualizado); // quem vai substituir o cliente naquela linha
                 encontrado = true;
                 break;
             }
         }
 
         if (encontrado) {
-            // 3. Reescreve TODO o arquivo com a nova lista
+            // reescreve TODO o arquivo com a nova lista com o cliente atualizado
             reescreverArquivo(clientes);
             return true;
         }
         return false;
     }
 
-    /**
-     * Deleta um cliente (busca pelo CPF e reescreve o arquivo)
-     */
+    // busca pelo cpf e se o cliente existir ele apaga aquela linha e deleta ele do banco de daods
     public boolean deletar(String cpf) {
-        // 1. Lê todos os clientes
+        // le todos os clientes
         List<ModelCliente> clientes = listarTodos();
         
-        // 2. Cria uma nova lista sem o cliente a ser deletado (filtro)
+        // cria uma nova lista sem o cliente
         List<ModelCliente> clientesRestantes = clientes.stream()
             .filter(c -> !c.getCpf().equals(cpf))
             .collect(Collectors.toList());
         
-        // Verifica se houve alguma mudança (se o cliente foi encontrado e removido)
+        // ver se o cliente foi alterado ou removido
         if (clientesRestantes.size() < clientes.size()) {
-            // 3. Reescreve TODO o arquivo com a nova lista (sem o deletado)
+            // reescreve todo arquivo sem o cliente que foi deletado
             reescreverArquivo(clientesRestantes);
             return true;
         }
         return false;
     }
     
-    // Método privado auxiliar para reescrever o arquivo
+    // metodo pra auxiliar a reescrever o arquivo
     private void reescreverArquivo(List<ModelCliente> clientes) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(NOME_ARQUIVO, false))) {
-            // Usa 'false' para sobrescrever o arquivo existente
+            // usa "false" para sobreescrever o metodo existente
             for (ModelCliente cliente : clientes) {
                 writer.write(cliente.toFileString());
                 writer.newLine();

@@ -15,59 +15,46 @@ public class ControllerCliente {
 
   private ClienteDAO dao = new ClienteDAO();
 
-    // ------------------------------------------
-    // Operações de Cadastro
-    // ------------------------------------------
-    
+  
     public boolean cadastrarCliente(String nome, String cpf, int idade) {
-        // 1. Validação básica de negócio (feita pelo Controller)
+     
         if (nome == null || nome.trim().isEmpty() || cpf == null || cpf.trim().isEmpty()) {
             System.err.println("Erro: Nome e CPF não podem ser vazios.");
             return false;
         }
         
-        // 2. Cria o objeto ModelCliente
+        // cria o objeto ModelCliente
         ModelCliente novoCliente = new ModelCliente(nome, cpf, idade);
         
-        // 3. Delega a persistência ao DAO
+        // delega a persistência ao DAO
         dao.salvar(novoCliente);
         return true;
     }
     
-    // ------------------------------------------
-    // Operações de Busca/Visualização
-    // ------------------------------------------
-    
+ 
     public ModelCliente buscarClientePorCpf(String cpf) {
         List<ModelCliente> clientes = dao.listarTodos();
         
-        // Busca o cliente na lista
+        // busca o cliente na lista
         for (ModelCliente cliente : clientes) {
             if (cliente.getCpf().equals(cpf)) {
                 return cliente; // Cliente encontrado
             }
         }
-        return null; // Cliente não encontrado
+        return null; // cliente nao encontrado
     }
-    
-    // ------------------------------------------
-    // Operações de Atualização
-    // ------------------------------------------
-
+ 
     public boolean atualizarCliente(String nome, String cpf, int novaIdade) {
-        // 1. Cria um ModelCliente (o CPF é a chave para o DAO saber quem atualizar)
+        // cpf é a chave
         ModelCliente clienteAtualizado = new ModelCliente(nome, cpf, novaIdade);
         
-        // 2. Delega a persistência ao DAO
+        // delega a persistência ao DAO
         return dao.atualizar(clienteAtualizado);
     }
 
-    // ------------------------------------------
-    // Operações de Deleção
-    // ------------------------------------------
-    
+   
     public boolean deletarCliente(String cpf) {
-        // 1. Delega a deleção ao DAO
+        // delega a deleção ao DAO
         return dao.deletar(cpf);
     }
 }
