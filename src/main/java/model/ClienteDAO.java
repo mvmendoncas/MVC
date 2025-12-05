@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClienteDAO {
-    // Arquivo onde os dados serão salvos. Ele será criado na raiz do projeto.
-    private static final String NOME_ARQUIVO = "clientes_db.txt";
+    // Arquivo onde os dados serao salvos
+    private static final String NOME_ARQUIVO = "clientes_db.txt"; // SUBSTITUIR AQUI O NOME DO ARQUIVO QUE VC VAI CRIAR
     
-    // Método auxiliar para converter uma linha de texto em um objeto ModelCliente
+    // Metodo auxiliar para converter uma linha de texto em um objeto ModelCliente
     private ModelCliente parseCliente(String linha) {
         String[] partes = linha.split(";");
         if (partes.length == 3) {
@@ -31,16 +31,14 @@ public class ClienteDAO {
         return null;
     }
 
-    /**
-     * Lê todos os clientes do arquivo
-     * @return Lista de ModelCliente
-     */
+   
+    // pega todoa os clientes do arquivo e retorna uma lista de ModelCliente
     public List<ModelCliente> listarTodos() {
         List<ModelCliente> clientes = new ArrayList<>();
         File arquivo = new File(NOME_ARQUIVO);
         
         if (!arquivo.exists() || arquivo.length() == 0) {
-            return clientes; // Retorna lista vazia se o arquivo não existe ou está vazio
+            return clientes; // retorna lista vazia se o arquivo nao existe ou ta vazio
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(NOME_ARQUIVO))) {
@@ -60,7 +58,7 @@ public class ClienteDAO {
     }
 
     /**
-     * Salva um novo cliente (adiciona no final do arquivo)
+     * Salva um novo cliente, coloca mais um cliente na abaixo da ultima linha escrita do arquivo
      */
     public void salvar(ModelCliente cliente) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(NOME_ARQUIVO, true))) {
@@ -74,12 +72,13 @@ public class ClienteDAO {
     /**
      * Atualiza um cliente existente (busca pelo CPF e reescreve o arquivo)
      */
+    // busca pelo cpf e se achar chama o metodo que reescreve a linha no arquivo
     public boolean atualizar(ModelCliente clienteAtualizado) {
-        // 1. Lê todos os clientes
+        // le todos os clientes
         List<ModelCliente> clientes = listarTodos();
         boolean encontrado = false;
         
-        // 2. Procura e atualiza na lista da memória
+        // rocura e atualiza na lista da memória
         for (int i = 0; i < clientes.size(); i++) {
             if (clientes.get(i).getCpf().equals(clienteAtualizado.getCpf())) {
                 clientes.set(i, clienteAtualizado); // Substitui o cliente na lista
